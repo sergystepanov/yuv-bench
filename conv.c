@@ -4,8 +4,8 @@ void rgbaToYuv(void* destination, void* source, int width, int height, chromaPos
 	const int image_size = width * height;
 	unsigned char* rgba = source;
 	unsigned char* dst_y = destination;
-	unsigned char* dst_u = (int)destination + image_size;
-	unsigned char* dst_v = (int)destination + image_size + image_size / 4;
+	unsigned char* dst_u = dst_y + image_size;
+	unsigned char* dst_v = dst_y + image_size + image_size / 4;
 
 	int r1, g1, b1, stride;
 	// Y plane
