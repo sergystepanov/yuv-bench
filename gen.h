@@ -1,3 +1,6 @@
-#include <stdint.h>
+#ifndef YUV_BENCH_GEN_H
+#define YUV_BENCH_GEN_H
 
-uint8_t* some_rgba(int w, int h, uint8_t *rgb);
+unsigned char *some_rgba(int w, int h, unsigned char *rgb);
+
+#endif //YUV_BENCH_GEN_H

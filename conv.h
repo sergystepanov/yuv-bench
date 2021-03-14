@@ -1,3 +1,8 @@
+#ifndef YUV_BENCH_CONV_H
+#define YUV_BENCH_CONV_H
+
+#include <stdint.h>
+
 typedef enum {
     // It will take each TL pixel for chroma values.
     // XO  X   XO  X
@@ -11,3 +16,5 @@ typedef enum {
 } chromaPos;
 
 void rgbaToYuv(void *destination, void *source, int width, int height, chromaPos chroma);
+
+#endif //YUV_BENCH_CONV_H

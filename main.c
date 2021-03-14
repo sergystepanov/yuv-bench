@@ -20,46 +20,46 @@ int main(void) {
 	const int w = 2000;
 	const int h = 1000;
 
-  const int ss = 4*w*h;
-  const int ds = w*h*3/2;
-	unsigned char *src = malloc(ss * sizeof(unsigned char));
-	unsigned char *dst = malloc(ds * sizeof(unsigned char));
+    const int ss = 4 * w * h;
+    const int ds = w * h * 3 / 2;
+    unsigned char *src = malloc(ss * sizeof(unsigned char));
+    unsigned char *dst = malloc(ds * sizeof(unsigned char));
 
-	// cpu
-	system("cat /proc/cpuinfo | grep \"model name\" | head -1");
-	printf("image: %dx%d\nsrc: %d bytes, dst: %d bytes\n\n", w, h, ss, ds);
+    // cpu
+    system("cat /proc/cpuinfo | grep \"model name\" | head -1");
+    printf("image: %dx%d\nsrc: %d bytes, dst: %d bytes\n\n", w, h, ss, ds);
 
-	some_rgba(w, h, src);
+    some_rgba(w, h, src);
 
-	clock_t start, end;
-	long wasted;
-	double mean = 0;
-	int runs = 100;
-	int vals[100];
+    clock_t start, end;
+    double wasted;
+    double mean = 0;
+    int runs = 100;
+    double vals[100];
 
-	for (int i = 1; i <= runs; i++) {
-    start = clock();
-		rgbaToYuv(dst, src, w, h, BETWEEN_FOUR);
-		end = clock();
-		wasted = (end - start) / (CLOCKS_PER_SEC / 1000000);
-		mean += (wasted - mean) / i;
-		printf("| %5ld", wasted);
-		printf(GRN "μs " RESET);
-		if (i % 6 == 0) printf("\n");
-		vals[i - 1] = wasted;
-	}
+    for (int i = 1; i <= runs; i++) {
+        start = clock();
+        rgbaToYuv(dst, src, w, h, BETWEEN_FOUR);
+        end = clock();
+        wasted = (double) (end - start) / CLOCKS_PER_SEC * 1000;
+        mean += (wasted - mean) / i;
+        printf("| %5.2f", wasted);
+        printf(GRN "ms " RESET);
+        if (i % 6 == 0) printf("\n");
+        vals[i - 1] = wasted;
+    }
 
-	double sum = 0;
-	for (int i = 0; i < runs; i++) {
-		sum += pow((vals[i] - mean), 2);
-	}
-	double std_deviation = sqrt(sum / runs);
-	printf("\n------------\n");
-	printf(BOLD "%dμs" RESET, (int)mean);
-	printf("+-(%dμs)\n", (int)std_deviation);
+    double sum = 0;
+    for (int i = 0; i < runs; i++) {
+        sum += pow((vals[i] - mean), 2);
+    }
+    double std_deviation = sqrt(sum / runs);
+    printf("\n------------\n");
+    printf(BOLD "%.2fms" RESET, mean);
+    printf(" (+-%.2fms)\n", std_deviation);
 
-  free(src);
-  free(dst);
+    free(src);
+    free(dst);
 
-	return 0;
+    return 0;
 }
