@@ -1,6 +1,7 @@
 #include "conv.h"
 
-void rgbaToYuv(void *destination, void *source, int width, int height, chromaPos chroma) {
+// A dumb RGBA to YUV converter.
+void rgbaToYuvDumb(void *destination, void *source, int width, int height, chromaPos chroma) {
     const int image_size = width * height;
     unsigned char *rgba = source;
     unsigned char *dst_y = destination;
@@ -14,8 +15,6 @@ void rgbaToYuv(void *destination, void *source, int width, int height, chromaPos
         *dst_y++ = ((66 * rgba[i + 8] + 129 * rgba[i + 8 + 1] + 25 * rgba[i + 8 + 2]) >> 8) + 16;
         *dst_y++ = ((66 * rgba[i + 12] + 129 * rgba[i + 12 + 1] + 25 * rgba[i + 12 + 2]) >> 8) + 16;
     }
-
-    return;
 
     int r1, g1, b1, stride;
     // U+V plane

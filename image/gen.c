@@ -1,5 +1,8 @@
 #include "gen.h"
 
+// Generates a predefined RGBA image with the specified size.
+// e.g.:
+//
 //   8x4
 // xxxxrrrr
 // xxxxrrrr

@@ -15,6 +15,8 @@ typedef enum {
     BETWEEN_FOUR = 1
 } chromaPos;
 
-void rgbaToYuv(void *destination, void *source, int width, int height, chromaPos chroma);
+typedef void (*convFn)(void *, void *, int, int, chromaPos);
+
+void rgbaToYuvDumb(void *destination, void *source, int width, int height, chromaPos chroma);
 
 #endif //YUV_BENCH_CONV_H
