@@ -7,18 +7,17 @@ void rgbaToYuv(void *destination, void *source, int width, int height, chromaPos
     unsigned char *dst_u = dst_y + image_size;
     unsigned char *dst_v = dst_y + image_size + image_size / 4;
 
-    int r1, g1, b1, stride;
     // Y plane
-    for (int y = 0; y < height; ++y) {
-        stride = 4 * y * width;
-        for (int x = 0; x < width; ++x) {
-            r1 = 4 * x + stride;
-            g1 = r1 + 1;
-            b1 = g1 + 1;
-            *dst_y++ = ((66 * rgba[r1] + 129 * rgba[g1] + 25 * rgba[b1]) >> 8) + 16;
-        }
+    for (int i = 0, len = image_size; i < len; i += 4 * 4) {
+        *dst_y++ = ((66 * rgba[i] + 129 * rgba[i + 1] + 25 * rgba[i + 2]) >> 8) + 16;
+        *dst_y++ = ((66 * rgba[i + 4] + 129 * rgba[i + 4 + 1] + 25 * rgba[i + 4 + 2]) >> 8) + 16;
+        *dst_y++ = ((66 * rgba[i + 8] + 129 * rgba[i + 8 + 1] + 25 * rgba[i + 8 + 2]) >> 8) + 16;
+        *dst_y++ = ((66 * rgba[i + 12] + 129 * rgba[i + 12 + 1] + 25 * rgba[i + 12 + 2]) >> 8) + 16;
     }
 
+    return;
+
+    int r1, g1, b1, stride;
     // U+V plane
     if (chroma == TOP_LEFT) {
         for (int y = 0; y < height; y += 2) {
