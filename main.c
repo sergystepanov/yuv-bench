@@ -21,25 +21,21 @@ int main(void) {
 
     some_rgba(w, h, src);
 
-    convFn fn = rgbaToYuvDumb;
+    convFn fn1 = rgbaToYuvDumb;
+    convFn fn2 = rgbaToYuvLut;
     int runs = 200;
     runStats stats;
     newRunStats(&stats, runs);
+    runStats lutStats;
+    newRunStats(&lutStats, runs);
 
     // fastest
     for (int i = 1; i <= runs; i++) {
         startTime(&stats);
-        fn(dst, src, w, h, BETWEEN_FOUR);
+        fn1(dst, src, w, h, BETWEEN_FOUR);
         stopTime(&stats);
-    }
-
-    // lut
-    fn = rgbaToYuvLut;
-    runStats lutStats;
-    newRunStats(&lutStats, runs);
-    for (int i = 1; i <= runs; i++) {
         startTime(&lutStats);
-        fn(dst, src, w, h, BETWEEN_FOUR);
+        fn2(dst, src, w, h, BETWEEN_FOUR);
         stopTime(&lutStats);
     }
 
