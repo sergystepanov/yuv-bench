@@ -18,5 +18,6 @@ typedef enum {
 typedef void (*convFn)(void *, void *, int, int, chromaPos);
 
 void rgbaToYuvDumb(void *destination, void *source, int width, int height, chromaPos chroma);
+void rgbaToYuvLut(void *destination, void *source, int width, int height, chromaPos chroma);
 
 #endif //YUV_BENCH_CONV_H

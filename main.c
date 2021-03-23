@@ -26,10 +26,21 @@ int main(void) {
     runStats stats;
     newRunStats(&stats, runs);
 
+    // fastest
     for (int i = 1; i <= runs; i++) {
         startTime(&stats);
         fn(dst, src, w, h, BETWEEN_FOUR);
         stopTime(&stats);
+    }
+
+    // lut
+    fn = rgbaToYuvLut;
+    runStats lutStats;
+    newRunStats(&lutStats, runs);
+    for (int i = 1; i <= runs; i++) {
+        startTime(&lutStats);
+        fn(dst, src, w, h, BETWEEN_FOUR);
+        stopTime(&lutStats);
     }
 
     for (int i = 0; i < runs; i++) {
@@ -55,10 +66,16 @@ int main(void) {
     }
 
     printf(RESET "\n------------\n");
+    printf("fast: ");
     printf(BOLD "%.2fms" RESET, stats.mean);
     printf(" (+-%.2fms)\n", stats.std_deviation);
 
+    printf("lut:  ");
+    printf(BOLD "%.2fms" RESET, lutStats.mean);
+    printf(" (+-%.2fms)\n", lutStats.std_deviation);
+
     clearRunStats(&stats);
+    clearRunStats(&lutStats);
 
     free(src);
     free(dst);
